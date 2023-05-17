@@ -17,7 +17,7 @@ public class RectObj extends Rectangle {
 
         color = new Color(150, 75, 0);
 
-        speed = new Random().nextInt(6-4)+4;
+        speed = new Random().nextInt(6-2)+8;
 
     }
 

@@ -9,6 +9,8 @@ public class Spawner {
 
     public int timer = 0;
 
+    public List<Particula> particulas = new ArrayList<Particula>();
+
     public List<RectObj> meteoro = new ArrayList<RectObj>();
 
     public void update(){
@@ -24,7 +26,33 @@ public class Spawner {
 
             if(current.x > Game.WIDTH) {
                 meteoro.remove(current);
-                Game.vida_terra--;
+                Game.vida_terra-=4;
+            }
+
+            if(Game.clicado) {
+                if(Game.mx >= current.x && Game.mx < current.x + current.width){
+                    if(Game.my >= current.y && Game.my < current.y+ current.height){
+                        meteoro.remove(current);
+                        Game.pontuacao ++;
+                        Game.clicado = false;
+
+                        for(int n = 0; n < 50; n++){
+                            particulas.add(new Particula(current.x, current.y, 8, 8, current.color));
+                        }
+                    }
+                }
+                else {
+                    Game.mx = 0;
+                    Game.my = 0;
+                }
+            }
+        }
+
+        for(int i = 0; i < particulas.size(); i++){
+            particulas.get(i).update();
+            Particula part = particulas.get(i);
+            if(part.timer >= 60){
+                particulas.remove(part);
             }
         }
     }
@@ -37,6 +65,9 @@ public class Spawner {
             g2.setColor(current.color);
             g2.fillRect(current.x, current.y, current.width, current.height);
             g2.rotate(Math.toRadians(-current.rotation), current.x + current.width/2, current.y + current.height/2);
+        }
+        for(int i = 0; i < particulas.size(); i++){
+            particulas.get(i).render(g);
         }
     }
 
